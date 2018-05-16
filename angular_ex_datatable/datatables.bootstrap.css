@@ -1,0 +1,26 @@
+/*!
+ * angular-datatables - v0.5.0
+ * https://github.com/l-lin/angular-datatables
+ * License: MIT
+ */
+div.dataTables_length label {
+    font-weight: normal;
+    float: left;
+    text-align: left;
+}
+div.dataTables_length select {
+    width: 50px;
+    border: 1px #dddddd solid;
+    height: 34px;
+}
+div.dataTables_filter label {
+    font-weight: normal;
+    float: right;
+}
+div.dataTables_filter input {
+    width: 16em;
+    border: 1px #dddddd solid;
+    margin-left: 10px;
+    height: 34px;
+    padding: 6px 12px;
+}

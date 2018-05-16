@@ -1,0 +1,144 @@
+<html ng-app="crudApp">
+    <head>
+        <title>AngularJS Demo</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta property="og:title" content="Social Buttons for Bootstrap" />
+        <meta property="og:description" content="A beautiful replacement for JavaScript's 'alert' for Bootstrap" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="http://lipis.github.io/bootstrap-sweetalert/" />
+        <meta property="og:image" content="http://lipis.github.io/bootstrap-social/assets/bootstrap-sweetalert.png" />
+
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" type="text/css" href="datatables.bootstrap.css">
+        <link rel="stylesheet" href="//cdn.datatables.net/1.10.1/css/jquery.dataTables.css">
+
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="//cdn.datatables.net/1.10.1/js/jquery.dataTables.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+        <script src="https://rawgithub.com/l-lin/angular-datatables/v0.6.1/dist/angular-datatables.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="dist/sweetalert.js"></script>
+        <link rel="stylesheet" href="dist/sweetalert.css">
+    </head>
+    <body ng-app="crudApp" ng-controller="userController">
+        <div class="container wrapper">
+            <div class="row">
+                <br><br>
+                <h2 class="text-center">AngularJS CRUD Demo</h2>
+                <div class="modal fade" id="userAddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <button type="button" class="close" 
+                                        data-dismiss="modal">
+                                    <span aria-hidden="true">&times;</span>
+                                    <span class="sr-only">Close</span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">
+                                    Insert New User
+                                </h4>
+                            </div>
+                            <!-- Modal Body -->
+                            <form class="form-horizontal" role="form" id="userInsert">
+                                <div class="modal-body">
+                                    <div class="alert alert-danger none"><p></p></div>
+                                    <div class="alert alert-success none"><p></p></div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="firstname">First Name</label>
+                                            <input type="text" class="form-control" placeholder="First Name" ng-model="tempUserData.u_fname">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="lastname">Last Name</label>
+                                            <input type="text" class="form-control" placeholder="Last Name" ng-model="tempUserData.u_lname">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input type="email" class="form-control" placeholder="Email Address" ng-model="tempUserData.u_email">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phone">Phone</label>
+                                            <input type="text" class="form-control" placeholder="Phone Number" ng-model="tempUserData.u_phone">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="address">Address</label>
+                                            <textarea class="form-control" ng-model="tempUserData.u_address" rows="4"></textarea>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"> Close</button>
+                                    <button type="button" class="btn btn-primary" ng-click="submitUserData();"> Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="col-md-12 row">
+                        <a href="" class="btn btn-info pull-right" data-toggle="modal" data-target="#userAddModal">ADD NEW </a>
+                    </div>
+                    <br><br>
+                </div>
+                <br>
+
+                <div class="modal fade" id="userEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <button type="button" class="close" 
+                                        data-dismiss="modal">
+                                    <span aria-hidden="true">&times;</span>
+                                    <span class="sr-only">Close</span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">
+                                    Edit User Details
+                                </h4>
+                            </div>
+                            <form class="form-horizontal" role="form" id="userUpdate">
+                                <div class="modal-body">
+                                    <div class="alert alert-danger none"><p></p></div>
+                                    <div class="alert alert-success none"><p></p></div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="firstname">First Name</label>
+                                            <input type="text" class="form-control" ng-model="currentUserData.u_fname" value="{{currentUserData.u_fname}}">
+                                            <input type="hidden" class="form-control" ng-model="currentUserData.id" value="{{currentUserData.u_id}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="lastname">Last Name</label>
+                                            <input type="text" class="form-control" ng-model="currentUserData.u_lname" value="{{currentUserData.u_lname}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input type="email" class="form-control" ng-model="currentUserData.u_email" value="{{currentUserData.u_email}}" readonly="true">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phone">Phone</label>
+                                            <input type="text" class="form-control" ng-model="currentUserData.u_phone" value="{{currentUserData.u_phone}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="address">Address</label>
+                                            <textarea class="form-control" ng-model="currentUserData.u_address" rows="4">{{currentUserData.u_address}}</textarea>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"> Close</button>
+                                    <button type="button" class="btn btn-primary" ng-click="editUserData();"> Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <a href="" id="editFormModal" class="btn btn-info hide" data-toggle="modal" data-target="#userEditModal">Edit User</a>
+            </div>
+
+            <div class="col-md-12">
+                <table class="table table-striped table-hover" datatable dt-options="dtOptionsUser" dt-columns="dtColumnsUser"></table>
+            </div>
+        </div>
+        <script src="angular-script.js"></script>
+    </body>
+</html>
